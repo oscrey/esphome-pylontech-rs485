@@ -1,3 +1,10 @@
+## [1.2.2](https://github.com/Fahmula/esphome-pylontech-rs485/compare/v1.2.1...v1.2.2) (2025-08-02)
+
+
+### Bug Fixes
+
+* Correct current limits for inverter in command 63 ([1213b6e](https://github.com/Fahmula/esphome-pylontech-rs485/commit/1213b6ed5b66b2b9c4fb22f464276ae26c88e023))
+
 ## [1.2.1](https://github.com/Fahmula/esphome-pylontech-rs485/compare/v1.2.0...v1.2.1) (2025-07-31)
 
 # [1.2.0](https://github.com/Fahmula/esphome-pylontech-rs485/compare/v1.1.0...v1.2.0) (2025-07-10)
