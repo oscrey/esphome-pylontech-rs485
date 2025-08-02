@@ -71,6 +71,7 @@ class PylontechRS485 : public Component, public uart::UARTDevice {
   void set_min_voltage_sensor(sensor::Sensor *sensor) { this->min_voltage_sensor_ = sensor; }
   void set_max_charge_current_sensor(sensor::Sensor *sensor) { this->max_charge_current_sensor_ = sensor; }
   void set_max_discharge_current_sensor(sensor::Sensor *sensor) { this->max_discharge_current_sensor_ = sensor; }
+  void set_requested_force_charge(binary_sensor::BinarySensor *sensor) { this->requested_force_charge_ = sensor; }
 
  protected:
   // --- Helper and state functions ---
@@ -145,6 +146,7 @@ class PylontechRS485 : public Component, public uart::UARTDevice {
   binary_sensor::BinarySensor *charge_overcurrent_protection_{nullptr};
   binary_sensor::BinarySensor *discharge_overcurrent_protection_{nullptr};
   binary_sensor::BinarySensor *system_fault_protection_{nullptr};
+  binary_sensor::BinarySensor *requested_force_charge_{nullptr}; // This is the sensor that requests a force charge
 
   // --- Pointers for dynamic limit sensors ---
   sensor::Sensor *max_voltage_sensor_{nullptr};

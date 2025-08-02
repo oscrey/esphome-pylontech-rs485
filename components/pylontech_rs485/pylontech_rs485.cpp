@@ -287,7 +287,16 @@ void PylontechRS485::handle_command_62_() {
 
 void PylontechRS485::handle_command_63_() {
   char info_payload[19];
-  uint8_t status_byte = 0xC0;
+  // Build the status byte dynamically
+  uint8_t status_byte = 0;
+  status_byte |= (1 << 7); // Bit 7: Charge enable
+  status_byte |= (1 << 6); // Bit 6: Discharge enable
+
+  // Check if force charge is requested
+  if (this->requested_force_charge_ != nullptr && this->requested_force_charge_->state) {
+    status_byte |= (1 << 5); // Set Bit 5 to request "charge immediately"
+  }
+
   snprintf(info_payload, sizeof(info_payload), "%04X%04X%04X%04X%02X", this->max_charge_v_mv_,
            this->min_discharge_v_mv_, this->max_charge_i_da_, this->max_discharge_i_da_, status_byte);
   std::string info_payload_str(info_payload);

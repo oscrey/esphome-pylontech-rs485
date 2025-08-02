@@ -24,6 +24,7 @@ CONF_MAX_CHARGE_CURRENT = "max_charge_current"
 CONF_MAX_DISCHARGE_CURRENT = "max_discharge_current"
 CONF_MAX_VOLTAGE = "max_voltage"
 CONF_MIN_VOLTAGE = "min_voltage"
+CONF_REQUESTED_FORCE_CHARGE = "requested_force_charge"
 
 # --- General Health values ---
 CONF_SOH = "state_of_health"
@@ -126,6 +127,7 @@ SENSOR_KEYS_SCHEMA = cv.Schema(
         cv.Optional(CONF_MIN_VOLTAGE): cv.use_id(sensor.Sensor),
         cv.Optional(CONF_MAX_CHARGE_CURRENT): cv.use_id(sensor.Sensor),
         cv.Optional(CONF_MAX_DISCHARGE_CURRENT): cv.use_id(sensor.Sensor),
+        cv.Optional(CONF_REQUESTED_FORCE_CHARGE): cv.use_id(binary_sensor.BinarySensor),
 
         cv.Optional(CONF_UPDATE_TIMEOUT, default="60s"): cv.positive_time_period_milliseconds,
     }
@@ -206,6 +208,8 @@ async def to_code(config):
         CONF_SYSTEM_FAULT_PROTECTION: "set_system_fault_protection",
         # RS485 link monitoring binary sensor
         CONF_RS485_STATUS: "set_rs485_status",
+        # Force Charge Sensor
+        CONF_REQUESTED_FORCE_CHARGE: "set_requested_force_charge",
     }
 
     SWITCH_MAP = {
