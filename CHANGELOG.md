@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/Fahmula/esphome-pylontech-rs485/compare/v1.2.2...v1.3.0) (2025-08-02)
+
+
+### Features
+
+* Add requested force charge binary sensor ([ef683ff](https://github.com/Fahmula/esphome-pylontech-rs485/commit/ef683ff414f084bb132231b2ad2f527407a11759))
+
 ## [1.2.2](https://github.com/Fahmula/esphome-pylontech-rs485/compare/v1.2.1...v1.2.2) (2025-08-02)
 
 
