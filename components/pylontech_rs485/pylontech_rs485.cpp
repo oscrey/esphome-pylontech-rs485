@@ -58,7 +58,7 @@ void PylontechRS485::dump_config() {
   LOG_BINARY_SENSOR("  ", "Charge Overcurrent Protection", this->charge_overcurrent_protection_);
   LOG_BINARY_SENSOR("  ", "Discharge Overcurrent Protection", this->discharge_overcurrent_protection_);
   LOG_BINARY_SENSOR("  ", "System Fault Protection", this->system_fault_protection_);
-  LOG_BINARY_SENSOR("  ", "Inverter Communication Status", this->inverter_com_status_);
+  LOG_BINARY_SENSOR("  ", "RS485 Status", this->rs485_status_);
 }
 
 float PylontechRS485::get_setup_priority() const { return setup_priority::LATE; }
@@ -77,7 +77,7 @@ void PylontechRS485::loop() {
     this->is_data_valid_ = false;
     // Update com status
     if (this->inverter_com_status_ != nullptr) {
-      this->inverter_com_status_->publish_state(false);
+      this->rs485_status_->publish_state(false);
     }
   }
 
@@ -296,8 +296,8 @@ void PylontechRS485::handle_command_63_() {
 
   this->last_cmd63_ms_ = now;
 
-  if (this->inverter_com_status_ != nullptr) {
-    this->inverter_com_status_->publish_state(true);
+  if (this->rs485_status_ != nullptr) {
+    this->rs485_status_->publish_state(true);
   }
 }
 

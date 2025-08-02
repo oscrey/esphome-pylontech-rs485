@@ -10,7 +10,7 @@ PylontechRS485 = pylontech_rs485_ns.class_("PylontechRS485", cg.Component, uart.
 
 # --- RS485 Link Monitoring ---
 CONF_INVERTER_HEARTBEAT = "inverter_heartbeat"
-CONF_INVERTER_COM_STATUS = "inverter_com_status"
+CONF_RS485_STATUS = "rs485_status"
 CONF_HEARTBEAT_SWITCH = "heartbeat_switch"
 
 # --- Primary dynamic values ---
@@ -117,7 +117,7 @@ SENSOR_KEYS_SCHEMA = cv.Schema(
         cv.Optional(CONF_DISCHARGE_OVERCURRENT_PROTECTION): cv.use_id(binary_sensor.BinarySensor),
         cv.Optional(CONF_SYSTEM_FAULT_PROTECTION): cv.use_id(binary_sensor.BinarySensor),
         # --- RS485 link monitoring binary sensor ---
-        cv.Optional(CONF_INVERTER_COM_STATUS): cv.use_id(binary_sensor.BinarySensor),
+        cv.Optional(CONF_RS485_STATUS): cv.use_id(binary_sensor.BinarySensor),
         # --- RS485 heartbeat switch ---
         cv.Optional(CONF_HEARTBEAT_SWITCH): cv.use_id(switch.Switch),
 
@@ -205,7 +205,7 @@ async def to_code(config):
         CONF_DISCHARGE_OVERCURRENT_PROTECTION: "set_discharge_overcurrent_protection",
         CONF_SYSTEM_FAULT_PROTECTION: "set_system_fault_protection",
         # RS485 link monitoring binary sensor
-        CONF_INVERTER_COM_STATUS: "set_inverter_com_status",
+        CONF_RS485_STATUS: "set_rs485_status",
     }
 
     SWITCH_MAP = {

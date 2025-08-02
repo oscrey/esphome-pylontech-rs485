@@ -21,7 +21,7 @@ class PylontechRS485 : public Component, public uart::UARTDevice {
   void set_update_timeout(uint32_t timeout) { this->update_timeout_ms_ = timeout; }
 
   // --- Setters for RS485 link monitoring sensors & switch ---
-  void set_inverter_com_status(binary_sensor::BinarySensor *sensor) { this->inverter_com_status_ = sensor; }
+  void set_rs485_status(binary_sensor::BinarySensor *sensor) { this->rs485_status_ = sensor; }
   void set_inverter_heartbeat(sensor::Sensor *sensor) { this->inverter_heartbeat_ = sensor; }
   void set_heartbeat_switch(switch_::Switch *sw) { this->heartbeat_switch_ = sw; }
 
@@ -101,7 +101,7 @@ class PylontechRS485 : public Component, public uart::UARTDevice {
 
   // --- Pointers to the heartbeat sensors & switch ---
   sensor::Sensor *inverter_heartbeat_{nullptr};
-  binary_sensor::BinarySensor *inverter_com_status_{nullptr};
+  binary_sensor::BinarySensor *rs485_status_{nullptr};
   switch_::Switch *heartbeat_switch_{nullptr};
 
   // --- Pointers to all the sensors from the YAML config ---
