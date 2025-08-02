@@ -75,9 +75,21 @@ void PylontechRS485::loop() {
   if (this->is_data_valid_ && (millis() - this->last_update_ms_ > this->update_timeout_ms_)) {
     ESP_LOGW(TAG, "Sensor data timeout! Halting communication to trigger fail-safe.");
     this->is_data_valid_ = false;
-    // Update com status
-    if (this->rs485_status_ != nullptr) {
+    // Set status to false if it was true
+    if (this->rs485_status_ != nullptr && this->rs485_status_->state) {
       this->rs485_status_->publish_state(false);
+    }
+  }
+
+  if (this->rs485_status_ != nullptr && this->rs485_status_->state &&
+    (millis() - this->last_cmd63_ms_ > update_timeout_ms_)) {
+    ESP_LOGW(TAG, "Inverter communication timeout. Setting RS485 status to OFF.");
+    // Set status to false because we haven't heard from the inverter
+    this->rs485_status_->publish_state(false);
+
+    // Invalidate the heartbeat sensor value
+    if (this->inverter_heartbeat_ != nullptr) {
+      this->inverter_heartbeat_->publish_state(NAN);
     }
   }
 
@@ -296,8 +308,9 @@ void PylontechRS485::handle_command_63_() {
 
   this->last_cmd63_ms_ = now;
 
-  if (this->rs485_status_ != nullptr) {
+  if (this->rs485_status_ != nullptr && !this->rs485_status_->state) {
     this->rs485_status_->publish_state(true);
+    ESP_LOGI(TAG, "RS485 communication with inverter established.");
   }
 }
 
