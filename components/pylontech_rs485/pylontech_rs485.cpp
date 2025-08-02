@@ -76,7 +76,7 @@ void PylontechRS485::loop() {
     ESP_LOGW(TAG, "Sensor data timeout! Halting communication to trigger fail-safe.");
     this->is_data_valid_ = false;
     // Update com status
-    if (this->inverter_com_status_ != nullptr) {
+    if (this->rs485_status_ != nullptr) {
       this->rs485_status_->publish_state(false);
     }
   }
