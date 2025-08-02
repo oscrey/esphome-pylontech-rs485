@@ -176,6 +176,16 @@ globals:
     restore_value: yes
     initial_value: 'false'
 
+  # --- Link Monitoring & Control ---
+  - id: g_heartbeat_enabled
+    type: bool
+    restore_value: yes
+    initial_value: 'true'
+  - id: g_force_charge_requested
+    type: bool
+    restore_value: yes
+    initial_value: 'false'
+
 # --- Number entities (sliders) that Home Assistant will see ---
 number:
   - platform: template
@@ -482,6 +492,25 @@ switch:
     turn_off_action:
       - globals.set: { id: g_protection_system_fault, value: 'false' }
 
+  # --- Link Monitoring & Control Switches ---
+  - platform: template
+    name: "Enable Inverter Heartbeat Sensor"
+    id: link_heartbeat_enable
+    lambda: return id(g_heartbeat_enabled);
+    turn_on_action:
+      - globals.set: { id: g_heartbeat_enabled, value: 'true' }
+    turn_off_action:
+      - globals.set: { id: g_heartbeat_enabled, value: 'false' }
+
+  - platform: template
+    name: "Request Force Charge"
+    id: force_charge_switch
+    lambda: return id(g_force_charge_requested);
+    turn_on_action:
+      - globals.set: { id: g_force_charge_requested, value: 'true' }
+    turn_off_action:
+      - globals.set: { id: g_force_charge_requested, value: 'false' }
+
 # ===================================================================
 # 3. Template Sensors to provide the live data
 # ===================================================================
@@ -601,6 +630,13 @@ sensor:
     id: live_min_bms_temp
     lambda: return id(input_temperature).state;
     unit_of_measurement: "°C"
+
+  # --- RS485 Link Monitoring Sensors (Outputs from component) ---
+  - platform: template
+    id: link_heartbeat
+    name: "Inverter Heartbeat"
+    unit_of_measurement: "ms"
+    icon: "mdi:heart-pulse"
 
 # ===================================================================
 # 4. Alarms and Warnings binary sensors
@@ -736,12 +772,29 @@ binary_sensor:
     lambda: return id(g_protection_system_fault);
     device_class: problem
 
+  # --- RS485 Link Monitoring & Control Sensors ---
+  - platform: template
+    id: rs485_link_status
+    name: "RS485 Link Status"
+    device_class: connectivity
+
+  - platform: template
+    id: my_force_charge_sensor
+    name: "Force Charge Requested"
+    lambda: return id(g_force_charge_requested);
+    device_class: power
+
 # ===================================================================
 # 5. Configure the Pylontech RS485 Component
 # ===================================================================
 pylontech_rs485:
   uart_id: uart_bus
   update_timeout: 60s
+
+  # --- RS485 Link Monitoring ---
+  rs485_status: rs485_link_status
+  inverter_heartbeat: link_heartbeat
+  heartbeat_switch: link_heartbeat_enable
 
   # --- Link ALL sensors to the component ---
   # Core data
@@ -808,3 +861,4 @@ pylontech_rs485:
   min_voltage: live_min_v
   max_charge_current: live_max_charge_i
   max_discharge_current: live_max_discharge_i
+  requested_force_charge: my_force_charge_sensor

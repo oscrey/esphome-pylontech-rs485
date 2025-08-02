@@ -86,6 +86,13 @@ pylontech_rs485:
   # Default: 60s
   update_timeout: 60s
 
+  # --- Optional RS485 Link Monitoring ---
+  # These sensors help monitor the health of the RS485 communication
+  # link between the ESPHome device and the inverter.
+  # rs485_status: link_status
+  # inverter_heartbeat: link_heartbeat
+  # heartbeat_switch: link_heartbeat_enable
+
   # --- Optional Alarm and Protection Binary Sensors ---
   # Uncomment and link to ESPHome binary_sensor entities to report alarm and protection statuses.
   # These are typically used for simulation/testing purposes with the pylontech-emulator-example.yaml.
@@ -118,6 +125,9 @@ pylontech_rs485:
   # charge_overcurrent_protection: protection_charge_over_current
   # discharge_overcurrent_protection: protection_discharge_over_current
   # system_fault_protection: protection_system_fault
+
+  # --- Other Optional Sensors ---
+  # requested_force_charge: my_force_charge_sensor
 ```
 
 ### Parameter Descriptions:
@@ -152,6 +162,11 @@ pylontech_rs485:
 
 *   `update_timeout` (Optional, default: `60s`): The duration after which, if no new data is received from the linked sensors, the component will stop sending data to the inverter.
 
+*   **RS485 Link Monitoring (Optional):**
+    *   `rs485_status` (Optional): The ID of an ESPHome `binary_sensor` that reflects the communication status with the inverter. It turns `ON` when communication is active and `OFF` on timeout.
+    *   `inverter_heartbeat` (Optional): The ID of an ESPHome `sensor` that measures the interval (in milliseconds) between heartbeat messages from the inverter. Can be used to detect a frozen or slow communication link.
+    *   `heartbeat_switch` (Optional): The ID of an ESPHome `switch` to enable or disable the `inverter_heartbeat` sensor.
+
 *   **Optional Alarm and Protection Binary Sensors:**
     *   `total_voltage_high_alarm` (Optional): The ID of an ESPHome `binary_sensor` entity that indicates if the total battery voltage is too high.
     *   `total_voltage_low_alarm` (Optional): The ID of an ESPHome `binary_sensor` entity that indicates if the total battery voltage is too low.
@@ -174,6 +189,9 @@ pylontech_rs485:
     *   `charge_overcurrent_protection` (Optional): The ID of an ESPHome `binary_sensor` entity that indicates if charge overcurrent protection is active.
     *   `discharge_overcurrent_protection` (Optional): The ID of an ESPHome `binary_sensor` entity that indicates if discharge overcurrent protection is active.
     *   `system_fault_protection` (Optional): The ID of an ESPHome `binary_sensor` entity that indicates if system fault protection is active.
+
+*   **Other Optional Sensors:**
+    *   `requested_force_charge` (Optional): The ID of an ESPHome `binary_sensor`. When this sensor is `ON`, the component will signal to the inverter to request an immediate charge.
 
 ## Providing Battery Data (The Core Concept)
 
