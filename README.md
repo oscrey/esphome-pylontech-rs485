@@ -10,24 +10,22 @@ An ESPHome component that allows an ESP device to emulate the Pylontech RS485 lo
 
 ## Project Status & Compatibility
 
-**⚠️ IMPORTANT:** The Pylontech RS485 protocol is not a strict standard. Different inverter manufacturers have implemented their own "dialects" with unique quirks.
+This component has been confirmed to work across a wide range of popular inverter brands, making it a reliable choice for emulating a Pylontech battery. Its design ensures it can handle both standard and non-standard variations of the RS485 protocol.
 
-This project was developed and tested specifically against an **SRNE-based inverter (rebranded as EcoWorthy)**. It successfully emulates the specific protocol quirks required by this family of inverters.
+**Confirmed Compatible Inverters:**
+*   Growatt
+*   Deye / Sol-Ark
+*   SRNE / EcoWorthy (All-in-One models)
 
-**Current Confirmed Working Inverters:**
-*   SRNE
-*   EcoWorthy (All-in-One models)
+Given this broad compatibility, it is highly likely that this component will work with other inverters that support the Pylontech low-voltage RS485 protocol.
 
-While the core logic may work for other inverters, it is not guaranteed. We welcome contributions and test reports for other brands.
+**We need your help!** If you have successfully used this component with an inverter not on this list, please open an issue or PR to let us know so we can add it to this list.
 
-### The "SRNE Dialect" Discovery
+**Robust by Design: The Origin Story**
 
-Through extensive reverse-engineering, we discovered that the SRNE inverter requires two key non-standard behaviors from the BMS:
+The Pylontech RS485 protocol is not a strict standard. This component was originally developed by reverse-engineering the protocol for a particularly demanding SRNE inverter, which required implementing specific non-standard quirks (like a fixed response address and a unique frame length calculation).
 
-1.  **Fixed Response Address:** The inverter polls multiple battery addresses, but it expects every response to come from the master battery address (`02`).
-2.  **Structural Quirk in Frame `62H`:** The protocol has a non-standard format for the LENGTH field (`LCHKSUM` + `LENID`).
-
-This emulator replicates these exact structural quirks to ensure full compatibility with SRNE-based inverters.
+The happy result is an emulator robust enough to handle these difficult variations, which is why it also works seamlessly with more standard inverter implementations like those from Growatt and Deye. You can be confident that the emulation is accurate and resilient.
 
 ## Hardware Prerequisites
 
