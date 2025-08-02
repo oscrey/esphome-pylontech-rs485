@@ -96,8 +96,8 @@ class PylontechRS485 : public Component, public uart::UARTDevice {
   uint16_t temp_deci_k_{0};
   uint16_t max_charge_v_mv_{0};
   uint16_t min_discharge_v_mv_{0};
-  uint16_t max_charge_i_ca_{0};
-  uint16_t max_discharge_i_ca_{0};
+  uint16_t max_charge_i_da_{0};
+  uint16_t max_discharge_i_da_{0};
 
   // --- Pointers to the heartbeat sensors & switch ---
   sensor::Sensor *inverter_heartbeat_{nullptr};

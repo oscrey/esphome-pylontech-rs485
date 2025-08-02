@@ -139,8 +139,8 @@ bool PylontechRS485::update_state_from_sensors_() {
   // Update limits from their sensors for command 63
   this->max_charge_v_mv_ = this->max_voltage_sensor_->state * 1000;
   this->min_discharge_v_mv_ = this->min_voltage_sensor_->state * 1000;
-  this->max_charge_i_ca_ = this->max_charge_current_sensor_->state * 100;
-  this->max_discharge_i_ca_ = this->max_discharge_current_sensor_->state * 100;
+  this->max_charge_i_da_ = this->max_charge_current_sensor_->state * 10;
+  this->max_discharge_i_da_ = this->max_discharge_current_sensor_->state * 10;
   
   return true;
 }
@@ -289,7 +289,7 @@ void PylontechRS485::handle_command_63_() {
   char info_payload[19];
   uint8_t status_byte = 0xC0;
   snprintf(info_payload, sizeof(info_payload), "%04X%04X%04X%04X%02X", this->max_charge_v_mv_,
-           this->min_discharge_v_mv_, this->max_charge_i_ca_, this->max_discharge_i_ca_, status_byte);
+           this->min_discharge_v_mv_, this->max_charge_i_da_, this->max_discharge_i_da_, status_byte);
   std::string info_payload_str(info_payload);
   std::string length_field = this->calculate_length_field_(info_payload_str.length());
   std::string frame_data = PROTOCOL_VERSION + RESPONSE_ADDRESS + "4600" + length_field + info_payload_str;
