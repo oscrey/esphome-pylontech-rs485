@@ -64,14 +64,6 @@ void PylontechRS485::dump_config() {
 float PylontechRS485::get_setup_priority() const { return setup_priority::LATE; }
 
 void PylontechRS485::loop() {
-  if (this->update_state_from_sensors_()) {
-    this->last_update_ms_ = millis();
-    if (!this->is_data_valid_) {
-      ESP_LOGI(TAG, "Valid data received. Starting communication with inverter.");
-      this->is_data_valid_ = true;
-    }
-  }
-
   if (this->is_data_valid_ && (millis() - this->last_update_ms_ > this->update_timeout_ms_)) {
     ESP_LOGW(TAG, "Sensor data timeout! Halting communication to trigger fail-safe.");
     this->is_data_valid_ = false;
@@ -146,10 +138,21 @@ bool PylontechRS485::update_state_from_sensors_() {
 }
 
 void PylontechRS485::route_frame_request_(const std::string &frame_str) {
-  if (!this->is_data_valid_) {
-    ESP_LOGV(TAG, "Ignoring inverter request, data is not valid.");
+  if (!this->update_state_from_sensors_()) {
+    this->is_data_valid_ = false; 
+    
+    if (this->rs485_status_ != nullptr && this->rs485_status_->state) {
+      this->rs485_status_->publish_state(false);
+      ESP_LOGW(TAG, "RS485 communication with inverter halted (BMS data invalid).");
+    }
+    
+    ESP_LOGD(TAG, "Ignoring inverter request, data from sensors is not valid (NAN).");
     return;
   }
+  
+  this->is_data_valid_ = true;
+  this->last_update_ms_ = millis();
+
   if (frame_str.length() < 18) {
     ESP_LOGW(TAG, "Received frame is too short.");
     return;
