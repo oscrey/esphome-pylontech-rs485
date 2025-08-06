@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/Fahmula/esphome-pylontech-rs485/compare/v1.3.0...v1.3.1) (2025-08-06)
+
+
+### Bug Fixes
+
+* **pylontech_rs485.cpp:** Halt communication on BMS disconnect ([af61ebf](https://github.com/Fahmula/esphome-pylontech-rs485/commit/af61ebf346417db8eb6ea8b371a4231123f3ed02))
+
 # [1.3.0](https://github.com/Fahmula/esphome-pylontech-rs485/compare/v1.2.2...v1.3.0) (2025-08-02)
 
 
