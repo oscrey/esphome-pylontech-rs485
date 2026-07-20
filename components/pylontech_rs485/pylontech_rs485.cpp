@@ -157,6 +157,17 @@ void PylontechRS485::route_frame_request_(const std::string &frame_str) {
     ESP_LOGW(TAG, "Received frame is too short.");
     return;
   }
+
+ // 1. Вырезаем байт адреса (символы на 3 и 4 позиции кадра) [‡]
+  std::string adr = frame_str.substr(3, 2); 
+
+  // 2. Если инвертор запрашивает НЕ первую группу ("02"), полностью молчим [‡]
+  if (adr != "02") { 
+    return; 
+  }
+  // =================================================================
+
+  
   std::string cid2 = frame_str.substr(7, 2);
 
   if (cid2 == "61") {
