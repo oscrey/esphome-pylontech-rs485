@@ -184,7 +184,6 @@ void PylontechRS485::route_frame_request_(const std::string &frame_str) {
 void PylontechRS485::handle_command_61_() {
   // --- Create local variables with SAFE DEFAULTS ---
   uint16_t cycles = 100;
-  uint16_t capacity = 1000;
   uint8_t  soh = 100;
   uint16_t max_cell_v = 3350;
   uint16_t min_cell_v = 3350;
@@ -228,7 +227,7 @@ void PylontechRS485::handle_command_61_() {
   char info_payload[99];
   snprintf(info_payload, sizeof(info_payload),
            "%04X%04X%02X%04X%04X%02X%02X%04X%04X%04X%04X%04X%04X%04X%04X%04X%04X%04X%04X%04X%04X%04X%04X%04X%04X%04X",
-           this->voltage_mv_, (uint16_t) this->current_ca_, this->soc_percent_, cycles, capacity, soh, 2,
+           this->voltage_mv_, (uint16_t) this->current_ca_, this->soc_percent_, cycles, cycles, soh, soh,
            max_cell_v, 0x0101, min_cell_v, 0x0108,
            avg_cell_temp, max_cell_temp, 0x0103, min_cell_temp, 0x0109,
            avg_mosfet_temp, max_mosfet_temp, 0x0101, min_mosfet_temp, 0x0101,
